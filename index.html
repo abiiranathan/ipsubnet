@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Subnet Calc</title>
+    <style>
+      body {
+        padding: 1rem;
+        max-width: 1000px;
+        margin: auto;
+        background-color: rgb(207, 232, 195);
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 1rem;
+        overflow-x: hidden;
+      }
+
+      form {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 0.5rem;
+        align-items: center;
+      }
+
+      h1,
+      h2 {
+        color: saddlebrown;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+      h2 {
+        font-size: 1rem;
+      }
+
+      .table-wrapper {
+        max-width: 100%;
+        overflow-x: auto;
+      }
+
+      table {
+        width: 100%;
+        max-width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+        background-color: white;
+      }
+
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 0.5rem;
+        text-align: left;
+      }
+
+      th {
+        background-color: #f2f2f2;
+      }
+
+      th:first-child,
+      td:first-child {
+        width: 25%;
+      }
+
+      input {
+        outline: none;
+        border: 1px solid cadetblue;
+        border-radius: 4px;
+        padding: 0.5rem 1.25rem;
+      }
+
+      input:valid {
+        background-color: palegreen;
+      }
+
+      input:invalid {
+        background-color: lightpink;
+      }
+
+      button {
+        outline: none;
+        background-color: rgb(7, 104, 136);
+        color: white;
+        font-size: 1.1rem;
+        border-radius: 8px;
+        border: 1px solid lightgray;
+        cursor: pointer;
+        padding: 0.4rem 1.25rem;
+      }
+
+      button:hover {
+        background-color: rgb(97, 23, 36);
+      }
+
+      body > table,
+      body > div {
+        margin-bottom: 1rem;
+      }
+
+      .subnet-flex {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        background-color: rgb(249, 241, 150);
+        padding: 5px 1rem;
+        border: 1px solid rgb(17, 132, 84);
+        border-bottom: 4px solid rgb(17, 132, 84);
+        margin-top: 1rem;
+      }
+
+      @media screen and (max-width: 400px) {
+        body {
+          font-size: 0.9rem;
+        }
+        form {
+          grid-template-columns: 1fr 1fr;
+        }
+        .subnet-flex {
+          flex-direction: column;
+          gap: 0.2rem;
+          align-items: start;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1 class="title">Subnet Calc</h1>
+    <small>CIDR: /24 to /32</small>
+    <hr />
+    <form>
+      <section>
+        <label for="subnet-input">NetworkID: </label>
+        <input
+          type="text"
+          id="subnet-input"
+          placeholder="Network ID"
+          value="192.168.100.1/24"
+          required
+          pattern="\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\/\d{2,2}"
+        />
+      </section>
+
+      <section>
+        <label for="subnet-count">No# of subnets: </label>
+        <input
+          id="subnet-count"
+          placeholder="Num subnets"
+          type="number"
+          min="1"
+          value="4"
+          max="255"
+          required
+        />
+      </section>
+      <button type="submit">SUBMIT</button>
+    </form>
+
+    <div class="subnet-flex">
+      <div>
+        <h2>Subnet: <span id="subnetInfo"></span></h2>
+      </div>
+
+      <div>
+        <h2>Class: <span id="ipClass"></span></h2>
+      </div>
+      <div>
+        <h2>Assignable IPs: <span id="assignableAddresses"></span></h2>
+      </div>
+    </div>
+
+    <h2>Subnet Table Information</h2>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>NetworkID</th>
+            <th>Netmask</th>
+            <th>HostID Range</th>
+            <th># Usable</th>
+            <th>BroadcastID</th>
+          </tr>
+        </thead>
+        <tbody id="subnetTable"></tbody>
+      </table>
+    </div>
+    <hr />
+    <div>
+      <h3>CIDR to Netmask Mapping</h3>
+      <table style="width: fit-content">
+        <thead>
+          <tr>
+            <th>CIDR</th>
+            <th>Netmask</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>/24</td>
+            <td>255.255.255.0</td>
+          </tr>
+          <tr>
+            <td>/25</td>
+            <td>255.255.255.128</td>
+          </tr>
+          <tr>
+            <td>/26</td>
+            <td>255.255.255.192</td>
+          </tr>
+          <tr>
+            <td>/27</td>
+            <td>255.255.255.224</td>
+          </tr>
+          <tr>
+            <td>/28</td>
+            <td>255.255.255.240</td>
+          </tr>
+          <tr>
+            <td>/29</td>
+            <td>255.255.255.248</td>
+          </tr>
+          <tr>
+            <td>/30</td>
+            <td>255.255.255.252</td>
+          </tr>
+          <tr>
+            <td>/31</td>
+            <td>255.255.255.254</td>
+          </tr>
+          <tr>
+            <td>/32</td>
+            <td>255.255.255.255</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <script src="subnet.js"></script>
+  </body>
+</html>
