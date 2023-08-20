@@ -44,7 +44,6 @@ const uint16_t SUBNET_TABLE[3][9] = {
 class SubnetCalculator {
 private:
   static const uint32_t ALL_ONES_MASK = 0xFFFFFFFFU;
-  static const char *subnet_mask_dd[];
 
 public:
   SubnetCalculator();
@@ -165,10 +164,7 @@ public:
                (networkID_int >> 24) & 0xFF, (networkID_int >> 16) & 0xFF,
                (networkID_int >> 8) & 0xFF, networkID_int & 0xFF);
 
-      int subnet_mask_index = new_subnet_mask - 24;
-
-      snprintf(subnet_mask, sizeof(subnet_mask), "/%d (%s)", new_subnet_mask,
-               subnet_mask_dd[subnet_mask_index]);
+      snprintf(subnet_mask, sizeof(subnet_mask), "/%d", new_subnet_mask);
 
       snprintf(host_range_start, sizeof(host_range_start), "%u.%u.%u.%u",
                (start_range >> 24) & 0xFF, (start_range >> 16) & 0xFF,
@@ -216,18 +212,6 @@ public:
              info.num_usable_hosts, info.broadcast_id.c_str());
     }
   }
-};
-
-const char *SubnetCalculator::subnet_mask_dd[] = {
-    "255.255.255.0",   // /24
-    "255.255.255.128", // /25
-    "255.255.255.192", // /26
-    "255.255.255.224", // /27
-    "255.255.255.240", // /28
-    "255.255.255.248", // /29
-    "255.255.255.252", // /30
-    "255.255.255.254", // /31
-    "255.255.255.255"  // /32
 };
 
 SubnetCalculator::SubnetCalculator(){};
